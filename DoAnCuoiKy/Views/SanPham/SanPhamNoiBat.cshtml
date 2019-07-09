@@ -1,0 +1,102 @@
+﻿@using DoAnCuoiKy.Models
+
+@model IEnumerable<SanPham>
+
+
+
+@{
+    var flag = true;
+    var count = 0;
+    List<SanPham> listSP = Model.OrderByDescending(sp => sp.LuotXem).Take(30) as List<SanPham>;
+}
+
+<div id="demo" class="carousel slide" style="height:400px;" data-ride="carousel">
+
+    <!-- The slideshow -->
+    <div class="carousel-inner" style="height:400px">
+
+        @for (int k = 0; k < 2; k++)
+        {
+            if (flag)
+            {
+                <div class="carousel-item active">
+                    <div class="row" style="height:400px">
+                        @foreach (var item in Model.OrderByDescending(sp => sp.LuotXem).Take(30))
+                        {
+                            <div class="col-sm-4" style="width:100%; margin:0px;padding:5px">
+                             
+                                    <a href="@Url.RouteUrl("XemChiTiet", new { @id = item.MaSP, @tensp=item.TenSP})" class="card nav-link" style="height:80%; border:none;text-decoration:none">
+                                        <img src="@Url.Content("~/Content/HinhAnhSP/" + item.HinhAnh)" alt="Los Angeles" class="card-img-top" style="text-decoration:none; height:30%">
+                                        <div class="card-body">
+                                            <p class="title display-5 text-center">@item.TenSP</p>
+                                            <p class="card-text"><span class="label label-warning">Giá </span> <strong>@item.DonGia </strong></p>
+                                        </div>
+                                    </a>
+                                
+                            </div>
+
+                            count++;
+
+                            if (count == 3)
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                List<SanPham> ListSP = Model.OrderByDescending(sp => sp.LuotXem).Take(30).ToList();
+
+
+                var size = ListSP.Count;
+
+                <div class="carousel-item">
+                    <div class="row">
+                        @{
+
+
+                            for (int i = count; i < size; i++)
+                            {
+
+                                foreach (var item in Model.OrderByDescending(sp => sp.LuotXem).Take(30).Skip(count))
+                                {
+                                   
+                                        <div class="col-sm-4" style="width:100%; margin:0px;padding:5px">
+                                            <a  href="@Url.RouteUrl("XemChiTiet", new { @id = item.MaSP, @tensp=item.TenSP})" class="card nav-link" style="height:80%; border:none;">
+                                                <img src="@Url.Content("~/Content/HinhAnhSP/" + item.HinhAnh)" alt="Los Angeles" class="card-img-top" style="height:30%;">
+                                                <div class="card-body">
+                                                    <p class="title display-5 text-center">@item.TenSP</p>
+                                                    <p class="card-text"><span class="label label-warning">Giá: </span> <strong>@item.DonGia </strong></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    
+                                    count++;
+
+                                    if (count % 3 == 0)
+                                    {
+                                        break;
+                                    }
+
+                                }
+                            }
+                        }
+
+                    </div>
+                </div>
+
+                                }
+                            }
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="carousel-control-prev" style="background:#dfd4d45c; width:50px" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" style="background:#dfd4d45c;width:50px" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>

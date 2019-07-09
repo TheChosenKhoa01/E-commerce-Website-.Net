@@ -1,0 +1,67 @@
+﻿@model DoAnCuoiKy.Models.NhaSanXuat
+@{
+    ViewBag.Title = "Eidt";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Edit","NhaSanXuat",FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Sửa Nhà Sản Xuất</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model=>model.MaNSX)
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên Nhà Sản Xuất</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TenNSX, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TenNSX, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+           <label class="control-label col-md-2">Thông Tin</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ThongTin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ThongTin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Logo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="HinhAnh" name="HinhAnh" type="file" />
+                <img src="@Url.Content("~/Content/LogoNSX/"+Model.Logo)" style="width:100px;height:100px;"/>
+                <br />
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Sửa" id="submit" class="btn btn-warning" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+    $(document).ready(function () {
+        $("#submit").click(function () {
+
+            var hinh = $("#HinhAnh").val();
+            var extension = hinh.split('.').pop().toLowerCase();
+            var loi = 0;
+            if ($.inArray(extension, ['png', 'gif', 'jpeg', 'jpg']) == -1) {
+                alert("File Anhr Logo Không Hợp Lệ. vui Lòng Kiểm Tra Lại");
+                return false;
+            }
+        });
+    });
+</script>
+
+

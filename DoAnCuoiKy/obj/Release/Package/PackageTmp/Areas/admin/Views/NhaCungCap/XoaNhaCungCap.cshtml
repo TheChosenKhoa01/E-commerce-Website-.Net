@@ -1,0 +1,68 @@
+﻿@model DoAnCuoiKy.Models.NhaCungCap
+
+@{
+    ViewBag.Title = "XoaNhaCungCap";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+<div class="container">
+    <h3>Bạn Có Chắc Là Muốn Xóa Nhà Cung Cấp Này</h3>
+    <div>
+        <h4>Nhà Cung Cấp</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenNCC)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenNCC)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DiaChi)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DiaChi)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SoDienThoai)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SoDienThoai)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Fax)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Fax)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.MaNCC)
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</div>

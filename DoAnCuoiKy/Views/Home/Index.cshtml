@@ -1,0 +1,50 @@
+﻿@using DoAnCuoiKy.Models;
+@model IEnumerable<SanPham>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Layout/HomeLayout.cshtml";
+}
+@{
+    IEnumerable<SanPham> lstDTM = (IEnumerable<SanPham>)ViewBag.ListDTM;
+    IEnumerable<SanPham> lstLTM = ViewBag.ListLTM as IEnumerable<SanPham>;
+    IEnumerable<SanPham> lstMTBM = ViewBag.ListMTBM as IEnumerable<SanPham>;
+    IEnumerable<SanPham> lstSanPham = ViewBag.lstSanPham as IEnumerable<SanPham>;
+}
+
+
+<h1 style="color:black;" class="text-center">Sản Phẩm Nổi Bật</h1>
+<div class="grid-in">
+    <div class="container">
+        @Html.Partial("~/Views/SanPham/SanPhamNoiBat.cshtml", lstSanPham)
+    </div>
+</div>
+
+
+@*Bước 1: Chúng ta sẽ tách code và lồng PartialView*@
+@*Bước 2: Gán dữ liệu từ Controller thông qua ViewBag vào partialview*@
+@*Điện thoại*@
+<div class="content-top">
+
+    <h1>Điện thoại mới nhất </h1>
+    <div class="grid-in sanphamnoibat" >
+        <div class="container">
+            @Html.Partial("~/Views/SanPham/SanPhamStyle1Partial.cshtml", lstDTM)
+        </div>
+   </div>                      
+
+    <h1>Máy vi tính xách tay mới nhất </h1>
+    <div class="grid-in">
+        <div class="container">
+            @Html.Partial("~/Views/SanPham/SanPhamStyle2Partial.cshtml", lstLTM)
+        </div>
+    </div>  
+
+   <h1>Máy tính bảng mới nhất</h1>
+    <div class="grid-in">
+        @*Máy tính bảng*@
+        <div class="container">
+            @Html.Partial("~/Views/SanPham/SanPhamStyle1Partial.cshtml", lstMTBM)
+        </div>
+   </div>
+
+</div>

@@ -1,0 +1,239 @@
+﻿@using DoAnCuoiKy.Models
+@using PagedList.Mvc;
+@model PagedList.IPagedList<BinhLuan>
+
+@{ var lstReply = ViewBag.lstReply;}
+<style>
+    .card-inner{
+    margin-left: 4rem;
+}
+    .binhluanitem{
+    display:none;
+}
+    .Trang1 {
+    display:block;
+    
+    }
+
+    .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+
+@{
+
+    int iDem = 0;
+    int iSLBinhLuanTrenTrang = 6;
+    int iTrang = 1;
+
+}
+@foreach (var binhluan in Model)
+{
+    if (iDem % iSLBinhLuanTrenTrang == 0 && iDem != 0)
+    {
+        iTrang++;
+    }
+    iDem++;
+    <div class="@Url.Content("binhluanitem Trang"+iTrang.ToString())" style="margin-top:10px;margin-bottom:10px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid" />
+
+                    </div>
+                    <div class="col-md-10">
+                        <p>
+                            <a class="float-left" href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong>@binhluan.ThanhVien.HoTen</strong></a>
+                            @for (int i = 0; i < binhluan.danhgia; i++)
+                            {
+
+                                <span class="float-right"><i class="text-warning fa fa-star" style="color:orange;"></i></span>
+                            }
+
+                            @{ var sosaoconlai = 5 - binhluan.danhgia;}
+                            @for (int i = 0; i < sosaoconlai; i++)
+                            {
+
+                                <span class="float-right"><i class="text-warning fa fa-star" style="color:#dac7c7;"></i></span>
+                            }
+                        </p>
+                        <div class="clearfix"></div>
+                        <p>@binhluan.NoiDungBL</p>
+                        <p>
+                            <button type="button" class="btn btn-primary" id="myBtn">
+                                <i class="fa fa-reply"></i> Trả Lời
+                            </button>
+                           
+                        </p>
+                        <!-- The Modal -->
+                        <div id="myModal" class="modal">
+
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span> 
+                                @using (Ajax.BeginForm("TraLoiBinhLuan","SanPham", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ThongBao" }))
+                                {
+                                    <input name="MaBL" value="@binhluan.MaBL" type="hidden" />
+                                    if (Session["TaiKhoan"] != null)
+                                    {
+                                        ThanhVien tv = (ThanhVien)Session["TaiKhoan"];
+                                        <input type="hidden" value="@tv.MaThanhVien" name="MaThanhVien" />
+                                    }
+                                    <div class="form-group">
+                                        <h3 style="font-weight:bold;color:red;text-align:left;" id="ThongBao"> </h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Nội Dung</label>
+                                        <textarea name="NoiDungTraLoi" id="noidungtraloi" class="form-control"></textarea>
+                                    </div>
+                                   
+                                    <button type="submit" class="btn btn-primary text-center" id="replybutton">Trả Lời</button>
+                                }
+                                   
+                               
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                @foreach (var item in lstReply)
+                {
+                    <div class="card card-inner">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid" />                                    
+                                </div>
+                                <div class="col-md-10">
+                                    <p><a href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong>@item.ThanhVien.HoTen</strong></a></p>
+                                    <p>@item.NoiDungTraLoi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+     </div>
+ }
+
+        <div id="paging" style="margin-top:10px;"></div>
+
+        <script src="~/Content/AdminArea/js/jquery.paging.min.js"></script>
+        <script>
+            //reply 
+            $("#replybutton").click(function(){
+                var noidung = $("#noidungtraloi").val();
+                if(noidung == "")
+                {
+                    alert("Bạn phải nhập nội dung");
+                    return false;
+                }
+            });
+            var pager = $("#paging").paging(@iTrang, {
+
+                // Set up easy format
+                format: "<->",
+                circular: true,
+                onFormat: function (type) {
+                    switch (type) {
+
+                        case 'next':
+
+                            if (this.active) {
+                                return '<a href="#' + this.value + '" class="next">&raquo;</a>';
+                            }
+                            return '<span class="disabled">&raquo;</span>';
+
+                        case 'prev':
+
+                            if (this.active) {
+                                return '<a href="#' + this.value + '" class="prev">&laquo;</a>';
+                            }
+                            return '<span class="disabled">&laquo;</span>';
+
+                        case 'fill':
+                            return this.page + "/" + this.pages;
+
+                    }
+                    return ""; // return nothing for missing branches
+                }
+            });
+            var item;
+            $(".prev").click(function(){
+                item = $(this).attr( "data-page");
+
+                $(".binhluanitem").hide();
+  
+                $(".Trang"+item).show();               
+            });
+            $(".next").click(function(){
+                item = $(this).attr( "data-page");
+                $(".binhluanitem").hide();
+
+                $(".Trang"+item).show();              
+            });
+
+          
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+
+

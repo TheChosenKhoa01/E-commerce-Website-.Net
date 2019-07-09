@@ -1,0 +1,69 @@
+﻿@model List<DoAnCuoiKy.Models.Reply>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800 text-center">Danh Sách Trả Lời</h1>
+        @if (Session["deleteReply"] != null)
+        {
+            <div class="text-info">@Session["deleteReply"]</div>
+        }
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div id="resultChiTietPhieuNhap">
+                    <div class="table-responsive">
+                        <table class="table table-bordered dataTableChiTietPhieuNhap" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Tên Thành Viên</th>
+                                    <th>Nội Dung Bình Luận</th>
+                                    <th>Nội Dung Trả Lời</th>                                    
+                                    <th>Ngày Trả Lời</th>                                  
+                                    <th>Hiện</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var groupitem in Model.GroupBy(m => m.BinhLuan))
+                                {
+                                    if (groupitem.Key != null)
+                                    {
+                                        foreach (var item in groupitem)
+                                        {
+                                            <tr>
+                                                <td>@item.ThanhVien.HoTen</td>
+                                                <td>@item.BinhLuan.NoiDungBL</td>
+                                                <td>@item.NoiDungTraLoi</td>
+                                                <td>@item.NgayTraLoi.Value.ToString("dd/MM/yyyy")</td>                                           
+                                                @if (item.hienthi.Value)
+                                                {
+                                                    <td>Hiển Thị</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Ẩn</td>
+                                                }
+                                                <td>
+                                                    @Html.ActionLink("Sửa", "Edit", "TraLoi", new { id = item.MaBL }, new { @class = "btn btn-warning" })
+                                                    @Html.ActionLink("Xóa", "Delete", "TraLoi", new { id = item.MaBL }, new { @class = "btn btn-danger" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

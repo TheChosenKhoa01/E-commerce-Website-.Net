@@ -1,0 +1,47 @@
+﻿@model DoAnCuoiKy.Models.BannerInfo
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container">
+    <h2>Delete</h2>
+
+    <h3>Bạn có chắc là muốn xóa ?</h3>
+    <div>
+        <h4>BannerInfo</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Tiêu Đề Banner
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BannerTitle)
+            </dd>
+
+            <dt>
+                Nội Dung Banner
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BannerContent)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input value="@Model.id" type="hidden" name="id"/>
+                <input value="@Model.BannerTitle" type="hidden" name="BannerTitle"/>
+                <input value="@Model.BannerContent" type="hidden" name="BannerContent"/>
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</div>

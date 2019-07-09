@@ -1,0 +1,124 @@
+﻿@using DoAnCuoiKy.Models
+@using PagedList.Mvc;
+@model PagedList.IPagedList<SanPham>
+
+@{
+    ViewBag.Title = "KQTimKiem";
+    Layout = "~/Views/Layout/ProductLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<div class="row">
+    <div class="col-6">
+        @using (Ajax.BeginForm("KQTimKiemPartial", "TimKiem", new AjaxOptions { @UpdateTargetId = "KQTimKiem", InsertionMode = InsertionMode.Replace }))
+        {
+            <div class="search">
+                <input type="text" id="txtTimKiem" value="" name="sTuKhoa" placeholder="Nhập vào tên sản phẩm cần tìm..." />
+                <input type="submit" id="btnTimKiem" value="Tìm kiếm" />
+            </div>
+        }
+    </div>
+    <div class="col-6">
+        <input type="hidden" name="sTuKhoa" id="sTuKhoa" value="@Session["TuKhoa"]"/>
+        <select id="selectSort" name="selectSort" style="float:right;">
+            <option>Chọn Phương Thức Sắp Xếp</option>
+            <option value="1">Giá Tăng Dần</option>
+            <option value="2">Giá Giảm Dần</option>
+        </select>
+    </div>
+</div>
+
+<script>
+    $("#selectSort").change(function()
+    {
+        var select = $("#selectSort option:selected").val();
+        var sTuKhoa = $("#sTuKhoa").val();
+       
+
+        $.ajax({
+            url: '@Url.Action("SapXepTheoTuKhoa", "SanPham")',
+
+            data:{
+                    selectSort: select,
+                    sTuKhoa: sTuKhoa,               
+            }
+           
+        }).done(function (data) {               
+            $("#kq").html(data);
+        })
+         .fail(function () {
+             alert("error");
+         })       
+    })
+</script>
+    <br /><br /><br /><br />
+      <div style="clear:both"></div>
+
+<div id="kq">
+    <div id="KQTimKiem">
+        <div class="col-md-12 product1">
+            <div class=" bottom-product">
+                @foreach (var item in Model.OrderBy(n => n.DonGia))
+                {
+                    <div class="col-md-4 bottom-cd simpleCart_shelfItem">
+                        <div class="product-at ">
+                            <a href="@Url.RouteUrl("XemChiTiet", new { @id = item.MaSP, @tensp = item.TenSP })">
+                                <img class="img-responsive" src="@Url.Content("~/Content/HinhAnhSP/" + item.HinhAnh)" alt="" style="width:150px;height:150px;">
+                                <div class="pro-grid">
+                                   
+                                </div>
+                            </a>
+                        </div>
+                        <p class="tun">@item.TenSP</p>
+                       
+                       <div style="margin-bottom:10px">
+                           @*Thẻ a nút thêm*@
+                           <a class="item_add"><p class="number item_price" style="margin-bottom:10px"><i> </i>Giá: @item.DonGia.Value.ToString("#,##")</p></a>
+                           <div class="text-center">
+                               @*Thêm giỏ hàng ajax*@
+                               @Ajax.ActionLink("Đặt Hàng", "ThemGioHangAjax", "GioHang", new { @MaSP = item.MaSP, @strURL = Request.Url.ToString() }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "divGioHang", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary text-center, display-block mt-2" })
+                           </div>
+                       </div>
+
+                    </div>
+                }
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+
+        <div class="dlink">
+            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("KQTimKiem", new { page = page, @sTuKhoa = ViewBag.TuKhoa }))
+        </div>
+    </div>
+</div>
+<style>
+    #btnTimKiem {
+        background-color: #4cae4c;
+        color: #fff;
+        padding: 0;
+        font-size: 1.1em;
+        font-weight: 600;
+        margin-right: 0;
+        border-radius: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -o-border-radius: 3px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        position: absolute;
+        left: 304px;
+        padding: 3px;
+    }
+
+    #txtTimKiem {
+        width: 300px;
+        border: 1px solid #000;
+    }
+    @@media only screen and (max-width: 600px) {
+        p.tun {
+            height: 70px;
+        }
+    }
+</style>

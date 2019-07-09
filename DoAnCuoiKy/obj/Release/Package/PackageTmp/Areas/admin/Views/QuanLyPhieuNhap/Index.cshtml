@@ -1,0 +1,128 @@
+﻿@using DoAnCuoiKy.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@{ 
+    IEnumerable<ChiTietPhieuNhap> lstChiTietPhieuNhap = ViewBag.lstChiTietPhieuNhap;
+    decimal tongthanhtien = 0;
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800 text-center">Danh Sách Phiếu Nhập</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            @Html.ActionLink("Nhập Hàng", "NhapHang", "QuanLyPhieuNhap", new { @class = "btn btn-primary" })
+        </div>
+        <div class="row" style="margin:10px 2px;">
+            <div class="col-2">
+                <label>Ngày Nhập</label>
+            </div>
+            <div class="col-md-5">
+                <input name="NgayNhap" id="ngaynhap" type="text" class="date" />
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="resultChiTietPhieuNhap">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Tên Sản Phẩm</th>
+                                <th>Tên Nhà Cung Cấp</th>
+                                <th>Đơn Giá</th>
+                                <th>Số Lượng</th>
+                                <th>Thành Tiền</th>
+                                <th>Ngày Nhập</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var group in lstChiTietPhieuNhap.GroupBy(danhsach => danhsach.MaPN))
+                            {
+                                if (group.Key != null)
+                                {
+                                    foreach (var item in group)
+                                    {
+                                        var thanhtien = item.SoLuongNhap * item.DonGiaNhap;
+                                        decimal tongtien = decimal.Parse(thanhtien.ToString());
+                                        tongthanhtien += tongtien;
+                                        @*ten san pham , ten nha cung cap, don gia, so luong nhap, ngay nhap*@
+                                        <tr>
+                                            <td>@item.SanPham.TenSP</td>
+
+                                            <td>@item.PhieuNhap.NhaCungCap.TenNCC</td>
+                                            <td>@item.DonGiaNhap</td>
+                                            <td>@item.SoLuongNhap</td>
+                                            <td>@tongtien.ToString("#,##") VND</td>
+                                            <td>@item.PhieuNhap.NgayNhap</td>
+
+                                        </tr>
+                                    }
+                                }
+                            }
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="6" class="text-right">Tổng Tiền: @tongthanhtien.ToString("#,##") VND</th>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                    <button class="btn btn-primary" id="exportexcel">Export To Excel</button>
+                    <button class="btn btn-info" id="exportpdf">Export To PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+<script>
+    @{ string date = DateTime.Now.Date.ToString("dd/MM/yyyy");}
+    $("#exportexcel").on("click", function () {
+        $("#dataTable").table2excel({
+            filename: "TableDonDatHang_"+@date+".xls"
+        });
+    });
+
+    $("body").on("click", "#exportpdf", function () {
+        html2canvas($('#dataTable')[0], {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+
+                pdfMake.createPdf(docDefinition).download("Table_"+@date+".pdf");
+            }
+        });
+    });
+
+
+    $(function () {
+        $(".date").datepicker();
+    });
+    $("#ngaynhap").on("change", function () {
+        var ngay = $(this).val();
+        $.ajax({
+            url: "@Url.Action("ChiTietPhieuNhapTheoNgay","QuanLyPhieuNhap")",
+            data: { date: ngay },
+            success: function (data) {
+                $("#resultChiTietPhieuNhap").html(data);
+            },
+            error: function () {
+                alert("error");
+            }
+          
+        });
+    });
+</script>
+

@@ -1,0 +1,95 @@
+﻿@model List<DoAnCuoiKy.Models.BinhLuan>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div id="kq">
+    <div class="container">
+        <div class="row" style="margin:10px 2px;">
+            <div class="col-2">
+                <label>Ngày Bình Luận</label>
+            </div>
+            <div class="col-md-5">
+                <input name="NgayNhapDon" id="NgayBinhLuan" type="text" class="date" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800 text-center">Danh Sách Bình Luận</h1>
+            @if (Session["deleteBinhLuan"] != null)
+            {
+                <div class="text-info">@Session["deleteBinhLuan"]</div>
+            }
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="resultChiTietPhieuNhap">
+                        <div class="table-responsive">
+                            <table class="table table-bordered dataTableChiTietPhieuNhap" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Tên Thành Viên</th>
+                                        <th>Nội Dung Bình Luận</th>
+                                        <th>Sản Phẩm</th>
+                                        <th>Đánh Giá</th>
+                                        <th>Ngày Bình Luận</th>
+                                        <th>Hiện</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.ThanhVien.HoTen</td>
+                                            <td>@item.NoiDungBL</td>
+                                            <td>@item.SanPham.TenSP</td>
+                                            <td>@item.danhgia</td>
+                                            <td>@item.NgayBinhLuan.Value.ToString("dd/MM/yyyy")</td>
+                                            @if (item.hienthi.Value)
+                                            {
+                                                <td>Hiển Thị</td>
+                                            }
+                                            else
+                                            {
+                                                <td>Ẩn</td>
+                                            }
+                                            <td>
+                                                @Html.ActionLink("Sửa", "Edit", "BinhLuan", new { id = item.MaBL }, new { @class = "btn btn-warning mb-2" })
+                                                @Html.ActionLink("Xóa", "Delete", "BinhLuan", new { id = item.MaBL }, new { @class = "btn btn-danger" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#NgayBinhLuan").on("change", function () {
+        var ngay = $(this).val();
+        $.ajax({
+            url: "@Url.Action("BinhLuanTheoNgay", "BinhLuan")",
+            data: { Ngay: ngay },
+        success: function (data) {
+            $("#kq").html(data);
+        },
+        error: function () {
+            alert("error");
+        }
+
+    });
+    });
+    $(function () {
+        $(".date").datepicker();
+    });
+    
+</script>

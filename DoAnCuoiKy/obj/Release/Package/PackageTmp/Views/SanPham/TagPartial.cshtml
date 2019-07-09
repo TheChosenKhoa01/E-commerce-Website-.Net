@@ -1,0 +1,24 @@
+﻿@using DoAnCuoiKy.Models
+@model IEnumerable<SanPham>
+
+@{ 
+    var lstSP = ViewBag.lstSP as IEnumerable<SanPham>;
+}
+
+<ul>
+
+    @foreach (var groupitem in lstSP.GroupBy(sp => sp.LoaiSanPham))
+    {
+        if (groupitem.Key != null)
+        {
+            foreach (var item in groupitem.GroupBy(sp => sp.NhaSanXuat))
+            {
+                <li><a href="@Url.Action("SanPham", "SanPham", new { @MaLoaiSP = groupitem.Key.MaLoaiSP, @MaNSX=item.Key.MaNSX })" style="font-size:10px;">@item.Key.TenNSX</a></li>
+            }
+        }
+    }
+   
+   
+
+    <div class="clearfix"> </div>
+</ul>

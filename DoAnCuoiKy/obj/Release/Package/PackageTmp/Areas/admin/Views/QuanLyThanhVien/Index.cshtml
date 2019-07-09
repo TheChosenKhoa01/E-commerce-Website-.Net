@@ -1,0 +1,61 @@
+﻿@using DoAnCuoiKy.Models
+@model List<ThanhVien>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@{ 
+    var lstLoaiThanhVien = ViewBag.lstLoaiThanhVien;
+}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800 text-center">Danh Sách Thành Viên</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            @Html.ActionLink("Thêm Thành Viên", "Create", "QuanLyThanhVien", new { @class = "btn btn-primary float-right" })
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Mã Thành Viên</th>
+                            <th>Tài Khoản</th>
+                            <th>Họ Tên</th>
+                            <th>Địa Chỉ</th>
+                            <th>Email</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Loại Thành Viên</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.MaThanhVien</td>
+
+                                <td>@item.TaiKhoan</td>                             
+                                <td>@item.HoTen</td>
+                                <td>@item.DiaChi</td>
+                                <td>@item.Email</td>
+                                <td>@item.SoDienThoai</td>
+                            
+                                <td>@item.LoaiThanhVien.TenLoai</td>
+                                <td>
+                                    @Html.ActionLink("Sửa", "Edit", "QuanLyThanhVien", new { @id = item.MaThanhVien }, new { @class = "nav-link" })
+                                </td>
+
+                                <td>
+                                    @Html.ActionLink("Xóa", "Delete", "QuanLyThanhVien", new { @id = item.MaThanhVien }, new { @class = "nav-link" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,68 @@
+﻿@model DoAnCuoiKy.Models.NhaSanXuat
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("create", "NhaSanXuat", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Thêm Nhà Sản Xuất</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.TenNSX, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TenNSX, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TenNSX, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ThongTin, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ThongTin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ThongTin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Logo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="HinhAnh" name="HinhAnh" type="file" />
+
+                <br />
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" id="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+    $(document).ready(function () {
+        $("#submit").click(function () {
+
+            var hinh = $("#HinhAnh").val();
+            var extension = hinh.split('.').pop().toLowerCase();    
+            var loi = 0;
+            if ($.inArray(extension, ['png', 'gif', 'jpeg', 'jpg']) == -1) {
+                alert("File Anhr Logo Không Hợp Lệ. vui Lòng Kiểm Tra Lại");
+                return false;
+            }                
+        });
+    });
+</script>

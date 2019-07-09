@@ -1,0 +1,59 @@
+﻿@model DoAnCuoiKy.Models.Reply
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container">
+    <h2>Delete</h2>
+
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Reply</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Họ Tên
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ThanhVien.HoTen)
+            </dd>
+            <dt>
+                Nội Dung Trả Lời
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NoiDungTraLoi)
+            </dd>
+
+            <dt>
+                Ngày Trả Lời              
+            </dt>
+                @Model.NgayTraLoi.Value.ToString("dd/MM/yyyy")
+            <dd>
+               
+            </dd>
+            <dt>
+                Nội Dung Bình Luận
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BinhLuan.NoiDungBL)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.MaBL)
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+
+</div>

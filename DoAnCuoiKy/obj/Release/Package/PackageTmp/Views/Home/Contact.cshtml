@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Layout/HomeLayout.cshtml";
+}
+
+<div class="contact">
+
+    <div class="container">
+        <h1>Contact</h1>
+        @if(ViewBag.ThongBao != null || ViewBag.ThongBao != "")
+        {
+            <div class="text-info">@ViewBag.ThongBao</div>
+        }
+        <div class="contact-form">
+
+            <div class="col-md-8 contact-grid">
+                @using (Html.BeginForm("Contact", "Home", FormMethod.Post))
+                {
+                    <input type="text" placeholder="Name" id="name" name="Name">
+
+                    <input type="text" placeholder="Email"  id="email" name="Email" >
+                    <input type="text" placeholder="Subject" id="subject" name="Subject">
+
+                    <textarea cols="77" rows="6" value=" " id="message"  name="Message" >Message</textarea>
+                    <div class="send">
+                        <input type="submit" id="submit" value="Send">
+                    </div>
+                }
+            </div>
+            <div class="col-md-4 contact-in">
+
+                <div class="address-more">
+                    <h4>Địa Chỉ</h4>
+                    <p>Đại Học Công Nghệ Thành Phố Hồ Chí Min</p>
+                    <p>475 A Điện Biên Phủ, Phường 25, Bình Thạnh, Hồ Chí Minh, Việt Nam</p>                  
+                </div>
+               
+
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.1203351307186!2d106.71240001472627!3d10.802094592304089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528a459cb43ab%3A0x6c3d29d370b52a7e!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBIdXRlY2g!5e0!3m2!1svi!2s!4v1561382454454!5m2!1svi!2s" height="450" frameborder="0" style="border:0; width:100%" allowfullscreen></iframe>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $("#submit").click(function () {
+           var email = $("#email").val();
+           var name = $("#name").val();
+        
+            var MessageContact = $("#message").val();
+            var loi = 0;
+            var message = "";
+            if (name == null || name == "") {
+                message += "Hãy Nhập Tên Của Bạn \n";
+                loi++;
+            }
+            if (email == null || email == "") {
+                message += "Hãy Nhập Email \n";
+                loi++;
+            }
+            if (MessageContact == null || MessageContact == "") {
+                message += "Hãy nhập nội đung "
+                loi++;
+            }
+            if (loi > 0) {
+                alert(message);
+                return false;
+            }
+
+            if (!checkEmail(email)) {
+                alert("Email này không hợp lệ. Xin Hãy Nhập lại");
+                return false;
+            }
+        });
+    function checkEmail(email) {
+
+        var filter = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+        if (!filter.test(email.value)) {
+            return true;
+        }
+        return false;
+
+    }   
+</script>

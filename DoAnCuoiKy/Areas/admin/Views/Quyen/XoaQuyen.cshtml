@@ -1,0 +1,27 @@
+﻿@model DoAnCuoiKy.Models.Quyen
+
+@{
+    ViewBag.Title = "XoaQuyen";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<h3>Bạn Có Chắc Là Muốn Xóa </h3>
+<div>
+    <h4>Quyen</h4>
+    <hr />
+
+    @using (Html.BeginForm(FormMethod.Post)) {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.HiddenFor(model => model.MaQuyen)
+        </div>
+        <div class="form-group">
+            <label>Tên Quyền</label>
+            <input  class="form-control" value="@Model.TenQuyen" name="TenQuyen" readonly="readonly" />
+        </div>
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

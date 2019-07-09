@@ -1,0 +1,56 @@
+﻿@using DoAnCuoiKy.Models;
+@model IEnumerable<Quyen>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+  
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800 text-center">Quản Lý Loại Quyền</h1>
+    @if (Session["deleteQuyen"] != null)
+    {
+        <div class="text-info">@Session["deleteQuyen"]</div>
+    }
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            @Html.ActionLink("Thêm Quyền", "ThemQuyen", "Quyen", new { @class = "btn btn-primary float-right" })
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Mã Quyền</th>
+                            <th>Tên Quyền</th>                          
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.MaQuyen</td>
+
+                                <td>@item.TenQuyen</td>
+                              
+                                <td>
+                                    @Html.ActionLink("Sửa", "SuaQuyen", "Quyen", new { ma = item.MaQuyen }, new { @class = "btn btn-warning" })
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Xóa", "XoaQuyen", "Quyen", new { ma = item.MaQuyen }, new { @class = "btn btn-danger" })
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

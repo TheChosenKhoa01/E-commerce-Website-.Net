@@ -1,0 +1,308 @@
+﻿@using DoAnCuoiKy.Models;
+@{
+    List<ThanhVien> lstThanhVien = ViewBag.lstnguoidung;
+    List<DonDatHang> lstDonDatHang = ViewBag.lstDonDatHang;
+    List<SanPham> lstSanPham = ViewBag.lstSanPham;
+
+    var date = DateTime.Now.Date.ToString("dd/MM/yyyy");
+    var arrayuser = new int[12];
+    var arrayDonDatHang = new int[12];
+    ViewBag.Title = "Index";    
+}
+
+<script src="~/Content/AdminArea/js/demo/highcharts.js"></script>
+
+@foreach (var groupitem in lstThanhVien.GroupBy(tv => tv.month))
+{
+
+    if (groupitem.Key != null)
+    {
+        foreach (var item in groupitem)
+        {
+            int month = int.Parse(item.month.Value.ToString());
+            for (int i = 0; i < 12; i++)
+            {
+                if (i == month)
+                {
+                    arrayuser[month] += 1;
+                }
+            }
+        }
+    }
+}
+
+@foreach (var groupitem in lstDonDatHang.GroupBy(ddh => ddh.NgayDat.Value.ToString("MM")))
+{
+    if (groupitem.Key != null)
+    {
+        foreach (var item in groupitem)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                var month = int.Parse(item.NgayDat.Value.ToString("MM"));
+                if (i == month)
+                {
+                    arrayDonDatHang[i] += 1;
+                }
+
+            }
+        }
+    }
+}
+<div id="ketquaThongKe">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" href="#home">Thống Kê Người Dùng</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#menu1">Thống Kê Đơn Hàng</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#menu2">Thống Kê Kho</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="home" class="container tab-pane active">
+            <br>
+            <h3 class="text-center mb-5">Thống Kê Lượng Người Dùng</h3>
+            <div class="row">
+                <div class="col-2">
+                    @*1 div*@
+                    <div style="border: 1px solid; padding: 10px; height: 25%; border-radius: 10px;background: #ece7e7; margin-bottom:10px">
+                        <p>Số Lượng Thành Viên: <strong>@lstThanhVien.Count</strong> </p>
+
+                    </div>
+                    @*het 1 div*@
+
+                    @*1 div*@
+                    <div style="border: 1px solid; padding: 10px; height: 20%; border-radius: 10px;background: #ece7e7;">
+                        @{
+                            var countItem = 0;
+                            foreach (var item in lstThanhVien)
+                            {
+                                if (item.Startdate.Value.ToString("dd/MM/yyyy") == DateTime.Now.Date.ToString("dd/MM/yyyy"))
+                                {
+                                    countItem++;
+                                }
+                            }
+
+
+                        }
+                        <p>Số Người Đăng Ký Trong Ngày: <strong>@countItem </strong></p>
+
+                    </div>
+                    @*het 1 div*@
+                </div>
+                <div class="col-10">
+                    <div id="chart1" style="width: 100%; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+        <div id="menu1" class="container tab-pane fade">
+            <br>
+            <h3 class="text-center mb-5">Thống Kê Đơn Hàng</h3>
+            <div class="row">
+                <div class="col-2">
+                    @*1 div*@
+                    <div style="border: 1px solid; padding: 10px; height: 20%; border-radius: 10px;background: #ece7e7; margin-bottom:10px">
+                        <p>Tổng Đơn Hàng Trong Năm: @lstDonDatHang.Count </p>
+
+                    </div>
+                    @*het 1 div*@
+
+                    @*1 div*@
+                    <div style="border: 1px solid; padding: 10px; height: 20%; border-radius: 10px;background: #ece7e7;">
+                        @{ var countDonHang = lstDonDatHang.Where(ddh => ddh.NgayDat.Value.ToString("dd/MM/yyy") == date).Count();  }
+                        <p>Số Đơn Hàng Trong Ngày: <strong>@countDonHang  </strong></p>
+                    </div>
+                    @*het 1 div*@
+                </div>
+                <div class="col-10">
+                    <div id="chart2" style="width: 100%; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+        <div id="menu2" class="container tab-pane fade">
+            <br>
+            <h3 class="text-center">Thống Kê Kho</h3>
+
+            <p class="m-5">Số Lượng Sản Phẩm: <strong>@lstSanPham.Count</strong> </p>
+
+            <div class="container">
+                <!-- Nav pills -->
+                <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="pill" href="#sanphamhethang">sản phẩm hết hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#sanphamsaphethang">sản phẩm sắp hết hàng</a>
+                    </li>
+
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div id="sanphamhethang" class="container tab-pane active">
+                        @if (lstSanPham.Where(sp => sp.SoLuongTon < 0).Count() <= 0)
+                        {
+                            <div class="text-info m-5">Chưa Có Sản Phẩm Nào Hết Hàng</div>
+                        }
+                        else
+                        {
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã Sản Phẩm</th>
+                                                <th>Tên Sản Phẩm</th>
+                                                <th>Hình Ảnh</th>
+                                                <th>So Luong Ton</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (var item in lstSanPham.Where(sp => sp.SoLuongTon < 0))
+                                            {
+                                                <tr>
+                                                    <td>@item.MaSP</td>
+
+                                                    <td>@item.TenSP</td>
+                                                    <td>
+                                                        <img class="img-responsive" style="width:100px;height:100px;" src="@Url.Content("~/Content/HinhAnhSP/"+item.HinhAnh)" />
+                                                    </td>
+                                                    <td>@item.SoLuongTon</td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div id="sanphamsaphethang" class="container tab-pane fade">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                @if (lstSanPham.Where(sp => sp.SoLuongTon < 10).Count() <= 0)
+                                {
+                                    <div>Chưa Có Danh Sách Các Sản Phẩm Sắp Hết Hàng</div>
+                                }
+                                else
+                                {
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã Sản Phẩm</th>
+                                                <th>Tên Sản Phẩm</th>
+                                                <th>Hình Ảnh</th>
+                                                <th>So Luong Ton</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (var item in lstSanPham.Where(sp => sp.SoLuongTon < 10).Where(sp => sp.SoLuongTon > 0))
+                                            {
+                                                <tr>
+                                                    <td>@item.MaSP</td>
+
+                                                    <td>@item.TenSP</td>
+                                                    <td>
+                                                        <img class="img-responsive" style="width:100px;height:100px;" src="@Url.Content("~/Content/HinhAnhSP/"+item.HinhAnh)" />
+                                                    </td>
+                                                    <td>@item.SoLuongTon</td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+        //thong ke nguoi dung
+        $(function () {
+            Highcharts.chart('chart1', {
+                title: {
+                    text: 'Số Lượng Thành Viên Mới Đăng Ký Theo Tháng',
+                },
+                xAxis: {
+                    categories: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+                        'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']
+                },
+                yAxis: {
+                    title: {
+                        text: 'User'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+
+                    data: [@arrayuser[0], @arrayuser[1], @arrayuser[2], @arrayuser[3], @arrayuser[4], @arrayuser[5], @arrayuser[6], @arrayuser[7], @arrayuser[8], @arrayuser[9], @arrayuser[10], @arrayuser[11]]
+                }]
+            });
+        });
+
+        //thong ke don hang
+
+        $(function () {
+            Highcharts.chart('chart2', {
+                title: {
+                    text: 'This is my first chart',
+                },
+                xAxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                },
+                yAxis: {
+                    title: {
+                        text: 'User'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    data: [@arrayDonDatHang[0], @arrayDonDatHang[1], @arrayDonDatHang[2], @arrayDonDatHang[3], @arrayDonDatHang[4], @arrayDonDatHang[5], @arrayDonDatHang[6], @arrayDonDatHang[7], @arrayDonDatHang[8], @arrayDonDatHang[9], @arrayDonDatHang[10], @arrayDonDatHang[11]]
+                }]
+            });
+        });
+</script>
+

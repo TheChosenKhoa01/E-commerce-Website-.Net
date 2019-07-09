@@ -1,0 +1,324 @@
+﻿@using DoAnCuoiKy.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@{ 
+    var lstChuaThanhToan = ViewBag.lstChuaThanhToan;
+    var lstChuaGiaoHang = ViewBag.lstChuaGiaoHang;
+    var lstDaGiaoHang =  ViewBag.lstDaGiaoHang;
+    var  lstKhachHang = ViewBag.lstKhachHang;
+    List<KhachHang> KH = lstKhachHang;
+    
+
+}
+
+
+    <div class="container">
+        <div class="row" style="margin:10px 2px;">
+            <div class="col-2">
+                <label>Ngày Đặt</label>
+            </div>
+            <div class="col-md-5">
+                <input name="NgayNhapDon" id="NgayNhapDon" type="text" class="date" />
+            </div>
+        </div>
+
+    </div>
+<div id="ketquaDonDatHang">
+    <div class="container">
+        <h2>Quản Lý Đơn Hàng</h2>
+        <br>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#home">Đơn Hàng Chưa Thanh Toán</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#menu1">Đơn Hàng Chưa Giao</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#menu2">Đơn Hàng Đã Giao</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="home" class="container tab-pane active">
+                <br>
+                <h3>Đơn Hàng Chưa Thanh Toán</h3>
+
+                @if (lstChuaThanhToan.Count <= 0)
+                {
+                    <div class="alert alert-info">Không Còn Đơn Hàng Chưa Thanh Toán</div>
+                }
+                else
+                {
+                <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã Đơn Hàng </th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>Ngày Đặt</th>
+                                            <th>Tình Trạng Giao Hàng</th>
+                                            <th>Ngày Giao</th>
+                                            <th>Đã Thanh Toán</th>
+                                            <th>Ưu Đãi</th>
+                                            <th>Đã Hủy</th>
+                                            <th>Duyệt Đơn Hàng</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in lstChuaThanhToan)
+                                        {
+
+                                            <tr>
+                                                <td>@item.MaDDH</td>
+                                                @if (KH.FirstOrDefault(kh => kh.MaKH == item.MaKH) != null)
+                                                {
+                                                    <td>@KH.FirstOrDefault(kh => kh.MaKH == item.MaKH).TenKH</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                <td>@item.NgayDat</td>
+                                                <td>@item.TinhTrangGiaoHang</td>
+                                                <td>@item.NgayGiao</td>
+                                                <td>@item.DaThanhToan</td>
+                                                <td>@item.UuDai</td>
+                                                <td>@item.DaHuy</td>
+                                                <td>@Html.ActionLink("Duyệt đơn hàng", "DuyetDonHang", new { id = @item.MaDDH }, new { @target = "_blank" })</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-primary" id="exportexcelchuathanhtoan">Export To Excel</button>
+                                <button class="btn btn-info" id="exportpdfchuathanhtoan">Export To PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div id="menu1" class="container tab-pane fade">
+                <br>
+                <h3>Đơn Hàng Chưa Giao Hàng</h3>
+
+                @if (lstChuaGiaoHang == null || lstChuaGiaoHang.Count <= 0)
+                {
+                    <div class="alert alert-info">Không Còn Đơn Hàng Chưa Giao</div>
+                }
+                else
+                {
+                <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTablechuagiaohang" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã Đơn Hàng </th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>Ngày Đặt</th>
+                                            <th>Tình Trạng Giao Hàng</th>
+                                            <th>Ngày Giao</th>
+                                            <th>Đã Thanh Toán</th>
+                                            <th>Ưu Đãi</th>
+                                            <th>Đã Hủy</th>
+                                            <th>Duyệt Đơn Hàng</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in lstChuaGiaoHang)
+                                        {
+
+                                            <tr>
+                                                <td>@item.MaDDH</td>
+                                                @if (KH.FirstOrDefault(kh => kh.MaKH == item.MaKH) != null)
+                                                {
+                                                    <td>@KH.FirstOrDefault(kh => kh.MaKH == item.MaKH).TenKH</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                <td>@item.NgayDat</td>
+                                                <td>@item.TinhTrangGiaoHang</td>
+                                                <td>@item.NgayGiao</td>
+                                                <td>@item.DaThanhToan</td>
+                                                <td>@item.UuDai</td>
+                                                <td>@item.DaHuy</td>
+                                                <td>@Html.ActionLink("Duyệt đơn hàng", "DuyetDonHang", new { id = @item.MaDDH }, new { @target = "_blank" })</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-primary" id="exportexcelchuagiaohang">Export To Excel</button>
+                                <button class="btn btn-info" id="exportpdfchuagiaohang">Export To PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+            <div id="menu2" class="container tab-pane fade">
+                <br>
+                <h3>Đơn Hàng Đã Giao </h3>
+
+                @if (lstChuaGiaoHang == null || lstChuaGiaoHang.Count <= 0)
+            {
+                    <div class="alert alert-info">Không Còn Đơn Hàng Đã Giao</div>
+                }
+                else
+                {
+                <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTabledathanhtoan" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã Đơn Hàng </th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>Ngày Đặt</th>
+                                            <th>Tình Trạng Giao Hàng</th>
+                                            <th>Ngày Giao</th>
+                                            <th>Đã Thanh Toán</th>
+                                            <th>Ưu Đãi</th>
+                                            <th>Đã Hủy</th>
+                                            <th>Duyệt Đơn Hàng</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in lstDaGiaoHang)
+                                        {
+
+                                            <tr>
+                                                <td>@item.MaDDH</td>
+                                                @if (KH.FirstOrDefault(kh => kh.MaKH == item.MaKH) != null)
+                                                {
+                                                    <td>@KH.FirstOrDefault(kh => kh.MaKH == item.MaKH).TenKH</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                <td>@item.NgayDat</td>
+                                                <td>@item.TinhTrangGiaoHang</td>
+                                                <td>@item.NgayGiao</td>
+                                                <td>@item.DaThanhToan</td>
+                                                <td>@item.UuDai</td>
+                                                <td>@item.DaHuy</td>
+                                                <td>@Html.ActionLink("Duyệt đơn hàng", "DuyetDonHang", new { id = @item.MaDDH }, new { @target = "_blank" })</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-primary" id="exportexceldathanhtoan">Export To Excel</button>
+                                <button class="btn btn-info" id="exportpdfdathanhtoan">Export To PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#NgayNhapDon").on("change", function () {
+        var ngay = $(this).val();
+        $.ajax({
+            url: "@Url.Action("QuanLyDonHangTheoNgay", "QuanLyDonHang")",
+            data: { date: ngay },
+        success: function (data) {
+            $("#ketquaDonDatHang").html(data);
+        },
+        error: function () {
+            alert("error");
+        }
+
+    });
+    });
+    $(function () {
+        $(".date").datepicker();
+    });
+
+    //export data
+    //don hang chua thanh toan
+
+    $("body").on("click", "#exportexcelchuathanhtoan", function () {
+        $("#dataTable").table2excel({
+            filename: "TableDonDatHangchuathanhtoan_.xls"
+        });
+    });
+
+    $("body").on("click", "#exportpdfchuathanhtoan", function () {
+        html2canvas($('#dataTablechuathanhtoan')[0], {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+
+                pdfMake.createPdf(docDefinition).download("Tablechuathanhtoan_.pdf");
+            }
+        });
+    });
+
+    //da thanh toan
+    $("body").on("click", "#exportexceldathanhtoan", function () {
+        $("#dataTabledathanhtoan").table2excel({
+            filename: "TableDonDatHangdathanhtoan_.xls"
+        });
+    });
+    $("body").on("click", "#exportpdfdathanhtoan", function () {
+        html2canvas($('#dataTabledathanhtoan')[0], {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+
+                pdfMake.createPdf(docDefinition).download("Tabledathanhtoan_.pdf");
+            }
+        });
+    });
+
+    //chua giao hang
+    $("body").on("click", "#exportexcelchuagiaohang", function () {
+        $("#dataTablechuagiaohang").table2excel({
+            filename: "TableDonDatHangchuagiaohang_.xls"
+        });
+    });
+    $("body").on("click", "#exportpdfchuagiaohang", function () {
+        html2canvas($('#exportpdfchuagiaohang')[0], {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+
+                pdfMake.createPdf(docDefinition).download("Tablechuagiaohang_.pdf");
+            }
+        });
+    });
+</script>

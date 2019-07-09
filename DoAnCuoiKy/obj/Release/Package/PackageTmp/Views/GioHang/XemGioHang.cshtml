@@ -1,0 +1,60 @@
+﻿ @using DoAnCuoiKy.Models;
+
+ @model List<ItemGioHang>
+
+@{
+    ViewBag.Title = "XemGioHang";
+    Layout = "~/Views/Layout/ProductLayout.cshtml";
+}
+
+@if (Model == null || Model.Count==0)
+{ 
+    <h1 style="color:#000;">Giỏ hàng rổng!</h1>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <td>Mã SP</td>
+            <td>Tên SP</td>
+            <td>Hình ảnh</td>
+            <td>Số lượng</td>
+            <td>Đơn giá</td>
+            <td>Thành tiền</td>
+
+        </tr>
+       @foreach (var item in Model)
+       { 
+        <tr>
+            <td>@item.MaSP</td>
+            <td>@item.TenSP</td>
+            <td><img src="@Url.Content("~/Content/HinhAnhSP/"+item.HinhAnh)" width="50" height="50"/></td>
+            <td>@item.DonGia.ToString("#,##") đồng</td>
+            <td>@item.SoLuong</td>
+            <td>@item.ThanhTien.ToString("#,##") đồng</td>
+            <td>@Html.ActionLink("Sửa","SuaGioHang", new {@MaSP = item.MaSP})
+                @Html.ActionLink("Xóa", "XoaGioHang", new { @MaSP = item.MaSP })
+            </td>
+   
+        </tr>
+       
+       }
+    </table>
+
+
+    using (Html.BeginForm("DatHang", "GioHang"))
+    {
+      <div class="divDatHang" style="text-align:right;">
+            <input type="submit" value="Đặt hàng" class="btn btn-danger" id="btnDatHang" />
+            <a class="btn btn-success" href="@Url.Action("Index","Home")">Mua Tiếp</a>          
+        </div>
+    }
+}
+        <style>
+            input[type="submit"] {
+                padding: 7px;
+                margin:0;
+            }
+        </style>
+
+     

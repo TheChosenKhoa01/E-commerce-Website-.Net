@@ -1,0 +1,50 @@
+﻿@model DoAnCuoiKy.Models.NhaSanXuat
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container">
+    <h3>Bạn Có Chắc là muốn xóa nhà sản xuất này?</h3>
+    <div>
+        <h4>Nhà Sản Xuất</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenNSX)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenNSX)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ThongTin)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ThongTin)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Logo)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Logo)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</div>

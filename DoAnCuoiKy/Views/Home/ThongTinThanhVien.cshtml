@@ -1,0 +1,145 @@
+﻿@model DoAnCuoiKy.Models.ThanhVien
+@{
+    ViewBag.Title = "ThongTinThanhVien";
+    Layout = "~/Views/Layout/HomeLayout.cshtml";
+}
+
+<style>
+    .show{
+        visibility:visible;
+        opacity:1;
+    }
+    .hidden{
+        visibility:hidden;
+        opacity:0;
+    }
+</style>
+<div class=" container">
+    <div class=" register">
+        <h1>    Thông Tin Tài Khoản</h1>
+        <div>
+            @Html.ValidationSummary()
+        </div>
+        @if (ViewBag.ThongBao != null || ViewBag.ThongBao != "")
+        {
+            <div class="text-info">@ViewBag.ThongBao</div>
+        }
+        @using (Html.BeginForm("ThongTinThanhVien", "Home", FormMethod.Post))
+        {
+            <input name="MaThanhVien" value="@Model.MaThanhVien" type="hidden"/>
+            <div class="col-md-6 register-top-grid">
+                <h3>Thông Tin Cá Nhân</h3>
+                <div>
+                    <span>Tài Khoản</span>
+                    <input type="text" name="TaiKhoan" id="taikhoan" value="@Model.TaiKhoan" required>
+                </div>
+                <div>
+                    <span>Họ Tên</span>
+                    <input type="text" name="HoTen" id="hoten" value="@Model.HoTen" required>
+                </div>
+                <div>
+                    <span>Địa Chỉ</span>
+                    <input type="text" name="DiaChi" id="diachi" value="@Model.DiaChi" required>
+                </div>
+                <div>
+                    <span>Email</span>
+                    <input type="text" id="email" name="Email" value="@Model.Email" required>
+                </div>
+
+                <div>
+                    <span>Điện Thoại</span>
+                    <input type="text" name="SoDienThoai" value="@Model.SoDienThoai" required>
+                </div>
+
+            </div>
+                    <div class="col-md-6 register-bottom-grid">
+                        <h3>Thông Tin Đăng Nhập</h3>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="changepass" value="option2">
+                            <label class="form-check-label" for="inlineCheckbox2">Đổi Mật Khẩu</label>
+                        </div>
+                        <div id="change" class="hidden">
+                            <div>
+                                <span>Mật Khẩu</span>
+                                <input type="password" id="matkhau" name="MatKhau">
+                            </div>
+                            <div>
+                                <span>Nhập Lại Mật Khẩu</span>
+                                <input type="password" id="nhaplaimatkhau" name="NhapLaiMatKhau">
+                            </div>
+                        </div>
+                        <input type="submit" id="submit" value="Đổi Thông Tin">
+
+                    </div>
+                    <div class="clearfix"> </div>
+        }
+
+    </div>
+</div>
+
+<script>
+    $("#submit").click(function () {
+        var email = $("#email").val();
+        var matkhau = $("#matkhau").val();
+        var nhaplaimatkhau = $("#nhaplaimatkhau").val();
+        var taikhoan = $("#taikhoan").val();
+        var hoten = $("#hoten").val();
+        var diachi = $("#diachi").val();
+
+
+        var loi = 0;
+        var message = "";
+        if (taikhoan == null || taikhoan == "")
+        {
+            message += "Hãy Nhập Tài Khoản \n";
+            loi++;
+        }
+        if (hoten == null || hoten == "")
+        {
+            message += "Hãy Nhập Họ Tên \n";
+            loi++;
+        }
+        if (diachi == null || diachi == "")
+        {
+            message += "Hãy Nhập Địa Chỉ"
+            loi++;
+        }
+
+        if (loi > 0)
+        {
+            alert(message);
+            return false;
+        }
+
+        if(!checkEmail(email))
+        {
+            alert("Email này không hợp lệ. Xin Hãy Nhập lại");
+            return false;
+        }
+
+        if (matkhau != nhaplaimatkhau)
+        {
+            alert("Mật Khẩu Nhập lại Không Trùng");
+            return false;
+        }
+
+    });
+    function checkEmail(email) {
+
+        var filter = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+        if (!filter.test(email.value)) {
+            return true;
+        }
+        return false;
+    }
+    $('#changepass').change(function () {
+        if ($(this).is(":checked")) {
+            $('#change').removeClass("hidden");
+            $('#change').addClass("show");
+        } else if ($(this).is(":not(:checked)")) {
+            $('#change').removeClass("show");
+            $('#change').addClass("hidden");
+        }
+    });
+</script>

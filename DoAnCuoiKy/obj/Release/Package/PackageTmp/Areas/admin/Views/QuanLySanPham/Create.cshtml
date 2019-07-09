@@ -1,0 +1,259 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@using DoAnCuoiKy.Models
+@model SanPham
+<script type="text/javascript">
+    tinymce.init({
+        selector: ".textarea",
+        //plugins: [
+        //    "advlist autolink lists link image charmap print preview anchor",
+        //    "searchreplace visualblocks code fullscreen",
+        //    "insertdatetime media table contextmenu paste"
+        //],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    });
+</script>
+
+
+<script>
+    $(function() {
+        $( ".date" ).datepicker();
+    });
+</script>
+
+<h2 class="text-center">Tạo mới sản phẩm</h2>
+
+@using (Html.BeginForm("create", "QuanLySanPham", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4></h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <span style="color:red;">@Html.Raw(ViewBag.upload as string) <br /> @Html.Raw(ViewBag.upload1 as string) </span>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TenSP, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TenSP,new { @class="form-control"})
+                @Html.ValidationMessageFor(model => model.TenSP)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DonGia, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DonGia, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DonGia)
+            </div>
+        </div>
+        @*Bước 3: đặt thêm thuộc tính class cho thẻ textbox*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.NgayCapNhap, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("NgayCapNhap", "", new { id = "datepicker", @class = "date form-control" })
+                @Html.ValidationMessageFor(model => model.NgayCapNhap)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CauHinh, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea name="CauHinh"  id="CauHinh" class="textarea"></textarea>
+               
+                @Html.ValidationMessageFor(model => model.CauHinh)
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SoLuongTon, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SoLuongTon, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SoLuongTon)
+            </div>
+        </div>
+
+        <div class="form-group">         
+            <div class="col-md-10">
+                <select name="Moi" class="form-control" style="width:50%;">
+                    <option value="1">Sản Phẩm Mới</option>
+                    <option value="0">Sản Phẩm Cũ</option>
+                </select>              
+            </div>
+        </div>
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaNCC, new { @class = "control-label col-md-2" })
+            <div class="col-md-3 ">
+                @Html.DropDownList("MaNCC", null, new { @class = "form-control" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaNSX, new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownList("MaNSX", null, new { @class = "form-control" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaLoaiSP, new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownList("MaLoaiSP", null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MaLoaiSP)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DaXoa, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DaXoa)
+                @Html.ValidationMessageFor(model => model.DaXoa)
+            </div>
+        </div>
+        @*Bước 2: Tạo 1 thẻ input với type = "file"> để lưu giá trị hình ảnh*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.HinhAnh, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="HinhAnh" name="HinhAnh" type="file" />
+
+                <br />
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.HinhAnh1, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="HinhAnh1" name="HinhAnh" type="file" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HinhAnh2, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="HinhAnh2" name="HinhAnh" type="file" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HinhAnh3, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="HinhAnh3" name="HinhAnh" type="file" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HinhAnh4, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="HinhAnh4" name="HinhAnh" type="file" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MoTa, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea name="MoTa" id="MoTa" class="textarea"></textarea>
+                @Html.ValidationMessageFor(model => model.MoTa)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create"  id="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<style>
+    .FooterAdmin {
+        display: none;
+    }
+   
+    input#TenSP,input#DonGia,input#TenSP, input#CauHinh, input#MoTa, 
+    input#SoLanMua, input#Moi,input#LuotBinhLuan,input#datepicker
+    ,input#CauHinh,input#SoLuongTon,input#LuotXem,input#LuotBinhChon,input#LuotBinhLuan {
+    width: 50%;
+}
+
+}
+</style>
+<script>
+    $(document).ready(function () {
+        $("#submit").click(function () {              
+           
+        //    // textbox
+            var TenSP = $("#TenSP").val();
+            var DonGia = $("#DonGia").val();
+                 
+            var loitext = 0;
+            var Message = "";
+            if (TenSP == "")
+            {
+                Message += "Bạn Hãy Nhập Vào Ô Tên Sản Phẩm/ \n";
+                loitext++;
+            }
+            if (DonGia == "")
+            {
+                Message += "Bạn Hãy Nhập Vào Ô Đơn Giá/ \n";
+                loitext++;
+            }
+           
+        
+       
+            var hinh = $("#HinhAnh").val();
+            var hinh1 = $("#HinhAnh1").val();
+            var hinh2 = $("#HinhAnh2").val();
+            var hinh3 = $("#HinhAnh3").val();
+            var hinh4 = $("#HinhAnh4").val();
+
+            var extension = hinh.split('.').pop().toLowerCase();
+            var extension1 = hinh1.split('.').pop().toLowerCase();
+            var extension2 = hinh2.split('.').pop().toLowerCase();
+            var extension3 = hinh3.split('.').pop().toLowerCase();
+            var extension4 = hinh4.split('.').pop().toLowerCase();
+
+            var loi = 0;
+            if ($.inArray(extension, ['png', 'gif', 'jpeg', 'jpg']) == -1) {
+                loi++;
+            }
+            if ($.inArray(extension1, ['png', 'gif', 'jpeg', 'jpg']) == -1) {
+                loi++;
+            }
+            if ($.inArray(extension2, ['png', 'gif', 'jpeg', 'jpg']) == -1) {
+                loi++;
+            }
+            if ($.inArray(extension3, ['png', 'gif', 'jpeg', 'jpg']) == -1) {
+                loi++;
+            }
+            if ($.inArray(extension4, ['png', 'gif', 'jpeg', 'jpg']) == -1) {
+                loi++;
+            }
+
+            if (loitext > 0)
+            {
+                if (Message != null) {
+                    alert(Message);
+                    return false;
+                }
+            }
+            if(loi > 0 )
+            {              
+                alert("Có Hình Ảnh Không phù hợp đuôi 'png', 'gif', 'jpeg', 'jpg'. Xin Hãy Kiểm Tra Lại");
+                return false;
+            }
+        });
+    });
+</script>

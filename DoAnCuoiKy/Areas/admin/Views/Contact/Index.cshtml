@@ -1,0 +1,52 @@
+﻿@using DoAnCuoiKy.Models
+@model List<Contact>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800 text-center">Danh Sách Góp Ý</h1>
+        <br />
+        @if (Session["deleteContact"] != null)
+        {
+            <div class="text-info">@Session["deleteContact"]</div>
+        }
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">       
+            <div class="card-body">
+                <div id="resultChiTietPhieuNhap">
+                    <div class="table-responsive">
+                        <table class="table table-bordered dataTableChiTietPhieuNhap" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Tên</th>
+                                    <th>Email</th>
+                                    <th>Chủ Đề</th>
+                                    <th>Nội Dung</th>
+                                    <th>Xóa</th>                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {                                                                                                               
+                                            <tr>
+                                                <td>@item.Name</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.Subject</td>
+                                                <td>@item.Message</td> 
+                                                <td>@Html.ActionLink("Xóa","Delete","Contact", new { id = item.ContactID }, new { @class = "btn btn-danger" })</td>   
+                                            </tr>                                
+                                }
+                            </tbody>                            
+                        </table>                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

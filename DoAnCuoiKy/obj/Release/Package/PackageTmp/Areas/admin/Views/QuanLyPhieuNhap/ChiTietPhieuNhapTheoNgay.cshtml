@@ -1,0 +1,59 @@
+﻿@using DoAnCuoiKy.Models
+@{
+    ViewBag.Title = "ChiTietPhieuNhapTheoNgay";
+}
+
+@{
+    List<ChiTietPhieuNhap> lstChiTietPhieuNhap = ViewBag.lstChiTietPhieuNhap ;
+    var lst = lstChiTietPhieuNhap.ToList();
+    decimal tongthanhtien = 0;
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Tên Sản Phẩm</th>
+                <th>Tên Nhà Cung Cấp</th>
+                <th>Đơn Giá</th>
+                <th>Số Lượng</th>
+                <th>Thành Tiền</th>
+                <th>Ngày Nhập</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in lstChiTietPhieuNhap.GroupBy(danhsach => danhsach.MaPN))
+            {
+                if (group.Key != null)
+                {
+                    foreach (var item in group)
+                    {
+                        var thanhtien = item.SoLuongNhap * item.DonGiaNhap;
+                        decimal tongtien = decimal.Parse(thanhtien.ToString());
+                        tongthanhtien += tongtien;
+                        @*ten san pham , ten nha cung cap, don gia, so luong nhap, ngay nhap*@
+                        <tr>
+                            <td>@item.SanPham.TenSP</td>
+
+                            <td>@item.PhieuNhap.NhaCungCap.TenNCC</td>
+                            <td>@item.DonGiaNhap</td>
+                            <td>@item.SoLuongNhap</td>
+                            <td>@tongtien.ToString("#,##") VND</td>
+                            <td>@item.PhieuNhap.NgayNhap</td>
+
+                        </tr>
+                    }
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-right">Tổng Tiền: @tongthanhtien.ToString("#,##") VND</th>
+            </tr>
+
+        </tfoot>
+    </table>
+    <button class="btn btn-primary" id="exportexcel">Export To Excel</button>
+</div>

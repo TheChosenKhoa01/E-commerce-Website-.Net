@@ -1,0 +1,84 @@
+﻿@model DoAnCuoiKy.Models.ThanhVien
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<div class="container">
+
+    <h3>Bạn Có Chắc là muốn xóa Thành Viên này</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Tài Khoản
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TaiKhoan)
+            </dd>
+
+            <dt>
+               Mật Khẩu
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MatKhau)
+            </dd>
+
+            <dt>
+               Họ Tên
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.HoTen)
+            </dd>
+
+            <dt>
+               Địa Chỉ
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DiaChi)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+               Số Điện Thoại
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SoDienThoai)
+            </dd>
+
+            <dt>
+               Tên Loại Thành Viên
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LoaiThanhVien.TenLoai)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model=>model.MaThanhVien)
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+
+</div>

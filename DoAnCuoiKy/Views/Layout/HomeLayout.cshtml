@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>New Store A Ecommerce Category Flat Bootstarp Resposive Website Template | Home :: w3layouts</title>
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <!-- Custom Theme files -->
+    <!--theme-style-->
+    <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <!--//theme-style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="New Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--fonts-->
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet" type="text/css"><!--//fonts-->
+    <!-- start menu -->
+    <link href="~/Content/css/memenu.css" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="~/Content/js/memenu.js"></script>
+    <script>$(document).ready(function () { $(".memenu").memenu(); });</script>
+    <script src="~/Content/js/simpleCart.min.js"> </script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <link href="~/Content/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <!--header-->
+    <div class="header">
+        @Html.Partial("~/Views/Layout/HeaderTopPartital.cshtml")    
+        <div class="container">
+            <div class="head-top">               
+                @Html.Action("MenuPartial","Home")
+             
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    
+    @*banner*@
+    @Html.Action("BannerPartial", "Home")
+    <!--content-->
+    <div class="content">
+        @RenderBody()
+       
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="footer-top-at">
+            </div>
+        </div>
+        @*<div class="footer-class">
+            <p>© 2015 New store All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+        </div>*@
+    </div>
+
+
+</body>
+</html>

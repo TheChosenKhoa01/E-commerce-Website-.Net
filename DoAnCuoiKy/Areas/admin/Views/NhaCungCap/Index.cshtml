@@ -1,0 +1,69 @@
+﻿
+@using DoAnCuoiKy.Models
+@model  IEnumerable<NhaCungCap>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800 text-center">Quản Lý Nhà Cung Cấp </h1>
+    
+    @if (Session["deleteNhaCungCap"] != null)
+    {
+        <br />
+        <div class="text-info">@Session["deleteNhaCungCap"]</div>
+        <br />
+    }
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            @Html.ActionLink("Thêm Nhà Cung Cấp", "ThemNhaCungCap", "NhaSanXuat", new { @class = "btn btn-primary float-right" })
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Mã Nhà Cung Cấp</th>
+                            <th>Tên Nhà Cung Cấp</th>
+                            <th>Địa Chỉ</th>
+                            <th>Email</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Fax</th>      
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.MaNCC</td>
+
+                                <td>@item.TenNCC</td>
+                                <td>@item.DiaChi</td>
+                                <td>@item.Email</td>
+                                <td>@item.SoDienThoai</td>
+                                <td>@item.Fax</td>
+
+                                <td>
+                                    @Html.ActionLink("Sửa", "SuaNhaCungCap", "NhaCungCap", new { id = item.MaNCC }, new { @class = "btn btn-warning" })
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Xóa", "XoaNhaCungCap", "NhaCungCap", new { id = item.MaNCC }, new { @class = "btn btn-danger" })
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->

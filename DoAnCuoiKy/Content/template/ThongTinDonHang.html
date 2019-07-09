@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Thông Tin Đơn Hàng</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Đơn Đặt Hàng: <strong style="color:red">{MaDDH}</strong> </h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số Lượng Đặt</th>
+                    <th>Đơn Giá Đặt</th>
+                </tr>
+            </thead>
+            <tbody>
+                {content}
+                <tr>
+                    <td align="right" colspan="4"> Tổng số lượng: {soluong}  sản phẩm</td>"
+                </tr>
+                <tr>
+                    <td align="right" colspan="4"> Tổng tiền: {tongtien}  đồng </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <p>Bạn có thể thanh toán khi đơn hàng được chuyển đến Hoặc thông qua chuyển khoản</p>
+    </div>
+    <div>
+        <h3>TÀI KHOẢN NGÂN HÀNG</h3>
+        <p><strong>TÊN NGÂN HÀNG</strong>: ACB Bank</p>
+        <p><strong> SỐ TÀI KHOẢN</strong>: 0451000260844</p>
+        <p><strong>CHỦ TÀI KHOẢN</strong>: Nguyễn A</p>
+
+     <p>Lưu ý: sau khi chuyển tiền xong quí khách gọi số 0966 036 626 để chúng tôi nhanh chóng kiểm tra tiền đến và chuyển hàng cho Quý khách.</p>
+     <p>+ Quý khách hàng  chuyển tiền cùng hệ thống ngân hàng: Sau 60 phút, tiền sẽ được chuyển vào tài khoản của chúng tôi</p>
+     <p> + Quý khách hàng chuyển tiền khác hệ thống ngân hàng: Trong khoảng 01 ngày tiền sẽ được chuyển vào tài khoản của chúng tôi. Nên khi chuyển khác hệ thống ngân hàng Quý khách hàng vui lòng hỏi nhân viên giao dịch để không lo lắng khi chúng tôi  chưa nhận được tiền của Quý khách hàng.</p>
+       
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+﻿@model DoAnCuoiKy.Models.LoaiThanhVien
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+<div class="container">
+    <h3>Bạn Có Chắc Là Muốn Xóa Không?</h3>
+    <div>
+        <h4>Xóa Loại Thành Viên</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenLoai)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenLoai)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UuDai)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UuDai)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model=>model.MaLoaiTV)
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+
+</div>

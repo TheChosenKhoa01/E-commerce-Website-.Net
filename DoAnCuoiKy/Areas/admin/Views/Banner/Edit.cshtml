@@ -1,0 +1,50 @@
+﻿@model DoAnCuoiKy.Models.BannerInfo
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/admin/Views/Shared/AdminLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Sửa Thông Tin Banner</h4>
+        <hr />
+        <br />
+        @if (ViewBag.Message != null)
+        {
+            <div class="text-info"><h4>@ViewBag.Message</h4></div>
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tiêu Đề Banner</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BannerTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BannerTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+           <label class="control-label col-md-2">Nội Dung Banner</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BannerContent, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BannerContent, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
